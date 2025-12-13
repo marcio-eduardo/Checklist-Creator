@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ChecklistData, ThemeClasses } from '../types';
 
 interface Props {
     onSubmit: (data: ChecklistData) => void;
     themeClasses: ThemeClasses;
+    externalBiosNova?: string; // Prop opcional vinda da busca
 }
 
-const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses }) => {
+const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNova }) => {
     const [formData, setFormData] = useState<ChecklistData>({
         responsavel: '',
         problema: '',
@@ -27,10 +28,18 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses }) => {
         observacoes: '',
         obsCheck: false,
         tipoEquipamento: 'Desktop',
-        inserirChaveWindows: false
+        inserirChaveWindows: false,
+        sku: '' // Mantido no tipo, mas não usado diretamente na UI mais
     });
 
-    // Verificação de Segurança: se themeClasses não vier, retorna null ou loader para não quebrar
+    // Efeito para preencher BiosNova quando a busca externa ocorrer
+    useEffect(() => {
+        if (externalBiosNova) {
+            setFormData(prev => ({ ...prev, biosNova: externalBiosNova }));
+        }
+    }, [externalBiosNova]);
+
+    // Verificação de Segurança
     if (!themeClasses) {
         return <div className="p-4 text-center">A carregar formulário...</div>;
     }
@@ -54,11 +63,9 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses }) => {
         onSubmit(formData);
     };
 
-    // Helper para aplicar classes comuns + tema
+    // Helper classes
     const inputClass = `mt-1 block w-full rounded-md shadow-sm sm:text-sm border p-2 transition-colors duration-300 ${themeClasses.input}`;
     const labelClass = `block text-sm font-medium transition-colors duration-300 ${themeClasses.label}`;
-
-    // Classes para radio buttons
     const radioContainerClass = `flex items-center space-x-2 cursor-pointer ${themeClasses.input} p-2 rounded-md border border-transparent hover:border-current transition-all`;
     const radioLabelClass = `text-sm font-medium ${themeClasses.label}`;
 
@@ -134,6 +141,7 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses }) => {
                 </div>
                 <div>
                     <label className={labelClass}>Bios Nova</label>
+                    {/* Campo preenchido automaticamente pela busca, mas editável */}
                     <input type="text" name="biosNova" value={formData.biosNova} onChange={handleChange} className={inputClass} />
                 </div>
                 <div>
@@ -143,7 +151,6 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Lógica Condicional: Adaptador AC/DC só aparece se não for Desktop */}
                 {formData.tipoEquipamento !== 'Desktop' && (
                     <div>
                         <label className={labelClass}>Adaptador AC/DC (V)</label>

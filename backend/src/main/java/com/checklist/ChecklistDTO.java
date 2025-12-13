@@ -21,4 +21,6 @@ public class ChecklistDTO {
     private String resumoServico;
     private String chaveWindows;
     private String observacoes;
+    private String tipoEquipamento;
+    private Boolean inserirChaveWindows;
 }

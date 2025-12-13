@@ -19,6 +19,7 @@ export interface ChecklistData {
     obsCheck: boolean;
     tipoEquipamento: 'Desktop' | 'Notebook' | 'MiniDesk';
     inserirChaveWindows: boolean;
+    sku: string;
 }
 
 export interface ThemeClasses {
@@ -37,4 +38,13 @@ export interface Theme {
     name: string;
     icon: string;
     classes: ThemeClasses;
+}
+
+export interface BiosDetails {
+    sku: string;
+    descricao: string;
+    pep: string;
+    codigoBios: string;
+    versaoBios: string;
+    rawData: string;
 }
