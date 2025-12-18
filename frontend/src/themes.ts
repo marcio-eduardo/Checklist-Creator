@@ -2,22 +2,7 @@ import type { Theme } from './types';
 
 export const themes: Record<string, Theme> = {
     padrao: {
-        name: 'Padrão (Clean)',
-        icon: '☀️',
-        classes: {
-            page: 'bg-gray-100',
-            container: 'bg-white shadow-md border-gray-200',
-            title: 'text-gray-800',
-            label: 'text-gray-700',
-            input: 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 bg-white text-gray-900',
-            button: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500',
-            output: 'bg-gray-50 border-gray-200 text-gray-800',
-            outputPre: 'bg-white text-gray-800 border-gray-300',
-            copyButton: 'text-indigo-700 bg-indigo-100 hover:bg-indigo-200'
-        }
-    },
-    dark: {
-        name: 'Modo Noturno',
+        name: 'Padrão',
         icon: '🌙',
         classes: {
             page: 'bg-gray-900',
@@ -32,7 +17,7 @@ export const themes: Record<string, Theme> = {
         }
     },
     corporativo: {
-        name: 'Corporativo (Azul)',
+        name: 'Corporativo',
         icon: '💼',
         classes: {
             page: 'bg-slate-200',
@@ -46,22 +31,7 @@ export const themes: Record<string, Theme> = {
             copyButton: 'text-slate-700 bg-slate-200 hover:bg-slate-300 rounded-none'
         }
     },
-    minimalista: {
-        name: 'Papel (Minimalista)',
-        icon: '📄',
-        classes: {
-            page: 'bg-white',
-            container: 'bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]',
-            title: 'text-black font-serif italic',
-            label: 'text-black font-medium',
-            input: 'border-2 border-black focus:ring-0 focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all bg-white text-black rounded-none',
-            button: 'bg-black text-white hover:bg-gray-800 rounded-none focus:ring-gray-500 shadow-[4px_4px_0px_0px_rgba(100,100,100,0.5)] active:translate-y-1 active:shadow-none transition-all',
-            output: 'bg-white border-2 border-black text-black',
-            outputPre: 'bg-gray-50 text-black border-black border-dashed border-2',
-            copyButton: 'text-black border-2 border-black hover:bg-gray-100 rounded-none'
-        }
-    },
-    cyber: {
+    cyberpunk: {
         name: 'Cyberpunk',
         icon: '👾',
         classes: {

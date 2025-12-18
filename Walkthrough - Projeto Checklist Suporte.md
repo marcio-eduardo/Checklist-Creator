@@ -26,7 +26,7 @@ Configurei um sistema completo com Backend (Java/Spring Boot) e Frontend (React/
 Abra um terminal em `backend/`:
 
 ```
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 ### 2. Iniciar Frontend

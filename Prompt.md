@@ -7,14 +7,14 @@
 - Crie um arquivo logs.md e salve na pasta Projet_Docs;
 - Tecnologias:
   - Back: 
-    - Java
+    - Java 21
     - Spring boot
   - Front:
     - React;
     - Typescript;
     - Tailwind;
 - Sempre me pergunte antes de executar qualquer alteração no projeto;
-- No fim de cada tarefa, atualize a pasta logs.md e tasks.md;
+- No fim de cada tarefa, atualize Na pasta Project_Docs os arquivos logs.md e tasks.md;
 
 
 
@@ -53,3 +53,5 @@ O programa deve solicitar os seguintes dados de entrada e gerar uma saida com o 
 [CHAVE WINDOWS:] "Chave do Windows"
 
 [OBSERVAÇÕES:] "Observações (Um check box que quando clicado libera um label de no máximo 500 caracteres)" 
+
+22bn550y -b

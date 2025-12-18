@@ -26,7 +26,9 @@ public class ChecklistController {
     public String generateOutput(@RequestBody ChecklistDTO dto) {
         StringBuilder sb = new StringBuilder();
 
+        appendIfPresent(sb, "[CHAMADO:] ", dto.getChamado());
         appendIfPresent(sb, "[RESPONSÁVEL NO ACOMPANHAMENTO:]  ", dto.getResponsavel());
+        appendIfPresent(sb, "[SEGMENTO:] ", dto.getSegmento());
         appendIfPresent(sb, "[PROBLEMA RELATADO:] ", dto.getProblema());
         appendIfPresent(sb, "[DIAGNÓSTICO REALIZADO:] ", dto.getDiagnostico());
         appendIfPresent(sb, "[BIOS ANTIGA:] ", dto.getBiosAntiga());

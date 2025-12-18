@@ -20,6 +20,8 @@ export interface ChecklistData {
     tipoEquipamento: 'Desktop' | 'Notebook' | 'MiniDesk';
     inserirChaveWindows: boolean;
     sku: string;
+    segmento: 'Governo' | 'Corporativo';
+    chamado: string;
 }
 
 export interface ThemeClasses {

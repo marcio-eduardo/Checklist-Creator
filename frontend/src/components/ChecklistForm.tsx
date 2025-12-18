@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import type { ChecklistData, ThemeClasses } from '../types';
+import InspecaoVisualModal from './InspecaoVisualModal';
+import MonitorLcdModal from './MonitorLcdModal';
+import TecladoModal from './TecladoModal';
+import SoftwaresModal from './SoftwaresModal';
+import ManutencaoModal from './ManutencaoModal';
+import MouseModal from './MouseModal';
 
 interface Props {
     onSubmit: (data: ChecklistData) => void;
@@ -29,8 +35,29 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
         obsCheck: false,
         tipoEquipamento: 'Desktop',
         inserirChaveWindows: false,
-        sku: '' // Mantido no tipo, mas não usado diretamente na UI mais
+        sku: '',
+        segmento: 'Governo', // Padrão
+        chamado: ''
     });
+
+    // Estado para controlar o modal de inspeção visual
+    const [isVisualModalOpen, setIsVisualModalOpen] = useState(false);
+    // Estado para controlar o modal de Monitor LCD
+    const [isMonitorModalOpen, setIsMonitorModalOpen] = useState(false);
+    // Estado para controlar o modal de Teclado
+    const [isTecladoModalOpen, setIsTecladoModalOpen] = useState(false);
+    // Estado para controlar o modal de Softwares
+    const [isSoftwaresModalOpen, setIsSoftwaresModalOpen] = useState(false);
+    // Estado para controlar o modal de Manutenção
+    const [isManutencaoModalOpen, setIsManutencaoModalOpen] = useState(false);
+    // Estado para controlar o modal de Mouse
+    const [isMouseModalOpen, setIsMouseModalOpen] = useState(false);
+
+    // ... (useEffect e handlers existentes)
+
+    const handleSegmentoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({ ...prev, segmento: e.target.value as any }));
+    };
 
     // Efeito para preencher BiosNova quando a busca externa ocorrer
     useEffect(() => {
@@ -63,6 +90,36 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
         onSubmit(formData);
     };
 
+    const handleSaveVisual = (summary: string) => {
+        setFormData(prev => ({ ...prev, inspecaoVisual: summary }));
+        setIsVisualModalOpen(false); // Fecha o modal após salvar
+    };
+
+    const handleSaveMonitor = (summary: string) => {
+        setFormData(prev => ({ ...prev, monitorLcd: summary }));
+        setIsMonitorModalOpen(false);
+    };
+
+    const handleSaveTeclado = (summary: string) => {
+        setFormData(prev => ({ ...prev, teclado: summary }));
+        setIsTecladoModalOpen(false);
+    };
+
+    const handleSaveSoftwares = (summary: string) => {
+        setFormData(prev => ({ ...prev, softwaresVerificacao: summary }));
+        setIsSoftwaresModalOpen(false);
+    };
+
+    const handleSaveManutencao = (summary: string) => {
+        setFormData(prev => ({ ...prev, manutencaoPreventiva: summary }));
+        setIsManutencaoModalOpen(false);
+    };
+
+    const handleSaveMouse = (summary: string) => {
+        setFormData(prev => ({ ...prev, mouseTouchpad: summary }));
+        setIsMouseModalOpen(false);
+    };
+
     // Helper classes
     const inputClass = `mt-1 block w-full rounded-md shadow-sm sm:text-sm border p-2 transition-colors duration-300 ${themeClasses.input}`;
     const labelClass = `block text-sm font-medium transition-colors duration-300 ${themeClasses.label}`;
@@ -91,6 +148,39 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
                         </label>
                     ))}
                 </div>
+            </div>
+
+            {/* Seleção de Segmento */}
+            <div className="mb-6">
+                <label className={`block text-lg font-semibold mb-2 ${themeClasses.title}`}>Segmento</label>
+                <div className="flex flex-wrap gap-4">
+                    {['Governo', 'Corporativo'].map((seg) => (
+                        <label key={seg} className={radioContainerClass}>
+                            <input
+                                type="radio"
+                                name="segmento"
+                                value={seg}
+                                checked={formData.segmento === seg}
+                                onChange={handleSegmentoChange}
+                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                            />
+                            <span className={radioLabelClass}>{seg}</span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <div>
+                <label className={labelClass}>Chamado</label>
+                <input
+                    type="text"
+                    name="chamado"
+                    maxLength={11}
+                    value={formData.chamado}
+                    onChange={handleChange}
+                    className={`mt-1 block w-48 rounded-md shadow-sm sm:text-sm border p-2 transition-colors duration-300 ${themeClasses.input}`}
+                    placeholder="2024..."
+                />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -134,7 +224,7 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
                 <textarea name="diagnostico" value={formData.diagnostico} onChange={handleChange} rows={3} className={inputClass}></textarea>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label className={labelClass}>Bios Antiga</label>
                     <input type="text" name="biosAntiga" value={formData.biosAntiga} onChange={handleChange} className={inputClass} />
@@ -144,13 +234,13 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
                     {/* Campo preenchido automaticamente pela busca, mas editável */}
                     <input type="text" name="biosNova" value={formData.biosNova} onChange={handleChange} className={inputClass} />
                 </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label className={labelClass}>Carga CMOS</label>
                     <input type="text" name="cargaCmos" value={formData.cargaCmos} onChange={handleChange} className={inputClass} />
                 </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {formData.tipoEquipamento !== 'Desktop' && (
                     <div>
                         <label className={labelClass}>Adaptador AC/DC (V)</label>
@@ -164,33 +254,124 @@ const ChecklistForm: React.FC<Props> = ({ onSubmit, themeClasses, externalBiosNo
             </div>
 
             <div>
-                <label className={labelClass}>Inspeção Visual (Máx 200 caracteres)</label>
-                <input type="text" name="inspecaoVisual" maxLength={200} value={formData.inspecaoVisual} onChange={handleChange} className={inputClass} />
+                <label className={labelClass}>Inspeção Visual (Clique para detalhar)</label>
+                <div onClick={() => setIsVisualModalOpen(true)} className="cursor-pointer">
+                    <input
+                        type="text"
+                        name="inspecaoVisual"
+                        readOnly
+                        value={formData.inspecaoVisual}
+                        className={`${inputClass} bg-gray-50 cursor-pointer`}
+                        placeholder="Clique para preencher a inspeção visual"
+                    />
+                </div>
+                {/* Modal de Inspeção Visual */}
+                <InspecaoVisualModal
+                    isOpen={isVisualModalOpen}
+                    onClose={() => setIsVisualModalOpen(false)}
+                    onSave={handleSaveVisual}
+                    currentValue={formData.inspecaoVisual}
+                />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label className={labelClass}>Monitor/LCD (Máx 100)</label>
-                    <input type="text" name="monitorLcd" maxLength={100} value={formData.monitorLcd} onChange={handleChange} className={inputClass} />
+                    <label className={labelClass}>Monitor/LCD (Clique para detalhar)</label>
+                    <div onClick={() => setIsMonitorModalOpen(true)} className="cursor-pointer">
+                        <input
+                            type="text"
+                            name="monitorLcd"
+                            readOnly
+                            value={formData.monitorLcd}
+                            className={`${inputClass} bg-gray-50 cursor-pointer`}
+                            placeholder="Clique para detalhar"
+                        />
+                    </div>
+                    <MonitorLcdModal
+                        isOpen={isMonitorModalOpen}
+                        onClose={() => setIsMonitorModalOpen(false)}
+                        onSave={handleSaveMonitor}
+                        currentValue={formData.monitorLcd}
+                    />
                 </div>
                 <div>
-                    <label className={labelClass}>Teclado (Máx 100)</label>
-                    <input type="text" name="teclado" maxLength={100} value={formData.teclado} onChange={handleChange} className={inputClass} />
+                    <label className={labelClass}>Teclado (Clique para detalhar)</label>
+                    <div onClick={() => setIsTecladoModalOpen(true)} className="cursor-pointer">
+                        <input
+                            type="text"
+                            name="teclado"
+                            readOnly
+                            value={formData.teclado}
+                            className={`${inputClass} bg-gray-50 cursor-pointer`}
+                            placeholder="Clique para detalhar"
+                        />
+                    </div>
+                    <TecladoModal
+                        isOpen={isTecladoModalOpen}
+                        onClose={() => setIsTecladoModalOpen(false)}
+                        onSave={handleSaveTeclado}
+                        currentValue={formData.teclado}
+                    />
                 </div>
                 <div>
-                    <label className={labelClass}>Mouse/Touchpad (Máx 100)</label>
-                    <input type="text" name="mouseTouchpad" maxLength={100} value={formData.mouseTouchpad} onChange={handleChange} className={inputClass} />
+                    <label className={labelClass}>Mouse/Touchpad (Clique para detalhar)</label>
+                    <div onClick={() => setIsMouseModalOpen(true)} className="cursor-pointer">
+                        <input
+                            type="text"
+                            name="mouseTouchpad"
+                            readOnly
+                            value={formData.mouseTouchpad}
+                            className={`${inputClass} bg-gray-50 cursor-pointer`}
+                            placeholder="Clique para detalhar"
+                        />
+                    </div>
+                    <MouseModal
+                        isOpen={isMouseModalOpen}
+                        onClose={() => setIsMouseModalOpen(false)}
+                        onSave={handleSaveMouse}
+                        currentValue={formData.mouseTouchpad}
+                    />
                 </div>
             </div>
 
             <div>
-                <label className={labelClass}>Softwares de Verificação</label>
-                <input type="text" name="softwaresVerificacao" value={formData.softwaresVerificacao} onChange={handleChange} className={inputClass} />
+                <label className={labelClass}>Softwares de Verificação (Clique para selecionar)</label>
+                <div onClick={() => setIsSoftwaresModalOpen(true)} className="cursor-pointer">
+                    <input
+                        type="text"
+                        name="softwaresVerificacao"
+                        readOnly
+                        value={formData.softwaresVerificacao}
+                        className={`${inputClass} bg-gray-50 cursor-pointer`}
+                        placeholder="Clique para selecionar softwares"
+                    />
+                </div>
+                <SoftwaresModal
+                    isOpen={isSoftwaresModalOpen}
+                    onClose={() => setIsSoftwaresModalOpen(false)}
+                    onSave={handleSaveSoftwares}
+                    currentValue={formData.softwaresVerificacao}
+                />
             </div>
 
             <div>
-                <label className={labelClass}>Manutenção Preventiva (Máx 100)</label>
-                <input type="text" name="manutencaoPreventiva" maxLength={100} value={formData.manutencaoPreventiva} onChange={handleChange} className={inputClass} />
+                <label className={labelClass}>Manutenção Preventiva (Clique para selecionar)</label>
+                <div onClick={() => setIsManutencaoModalOpen(true)} className="cursor-pointer">
+                    <input
+                        type="text"
+                        name="manutencaoPreventiva"
+                        readOnly
+                        value={formData.manutencaoPreventiva}
+                        className={`${inputClass} bg-gray-50 cursor-pointer`}
+                        placeholder="Clique para selecionar itens da manutenção"
+                    />
+                </div>
+                <ManutencaoModal
+                    isOpen={isManutencaoModalOpen}
+                    onClose={() => setIsManutencaoModalOpen(false)}
+                    onSave={handleSaveManutencao}
+                    currentValue={formData.manutencaoPreventiva}
+                />
             </div>
 
             <div>
