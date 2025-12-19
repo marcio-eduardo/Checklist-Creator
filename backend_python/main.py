@@ -71,7 +71,25 @@ else:
     def read_root():
         return {"message": "Backend running only. Frontend dist not found. Run 'npm run build' in frontend folder."}
 
+@app.post("/api/checklist/shutdown")
+def shutdown_server():
+    print("Shutting down server...")
+    os._exit(0)
+    return {"message": "Server shutting down"}
+
 if __name__ == "__main__":
     import uvicorn
+    import webbrowser
+    
+    # Fix for PyInstaller --noconsole mode (where stdout/stderr are None)
+    if sys.stdout is None:
+        sys.stdout = open(os.devnull, "w")
+    if sys.stderr is None:
+        sys.stderr = open(os.devnull, "w")
+
+    # Auto-open browser
+    webbrowser.open("http://127.0.0.1:8000")
+    
     # Use 127.0.0.1 loopback for local desktop app security (instead of 0.0.0.0)
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # use_colors=False prevents another potential isatty check issue
+    uvicorn.run(app, host="127.0.0.1", port=8000, use_colors=False)

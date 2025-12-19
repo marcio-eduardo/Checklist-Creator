@@ -145,6 +145,30 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                                                     <span className="mr-2">{t.icon}</span> {t.name}
                                                 </button>
                                             ))}
+
+                                            <div className="border-t border-gray-200 my-1"></div>
+
+                                            <button
+                                                type="button"
+                                                onClick={async (e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    if (confirm('Tem certeza que deseja fechar o aplicativo?')) {
+                                                        try {
+                                                            await fetch('http://localhost:8000/api/checklist/shutdown', { method: 'POST' });
+                                                            window.close(); // Tenta fechar a aba
+                                                            document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column'><h1>Aplicação Encerrada</h1><p>Você pode fechar esta janela.</p></div>";
+                                                        } catch (err) {
+                                                            console.error(err);
+                                                            alert('Erro ao tentar desligar o servidor.');
+                                                        }
+                                                    }
+                                                    setIsSettingsOpen(false);
+                                                }}
+                                                className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:font-bold text-red-600 ${themeClasses.input}`}
+                                            >
+                                                ❌ Sair do Sistema
+                                            </button>
                                         </div>
                                     </div>
                                 )}
