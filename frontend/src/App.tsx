@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import ChecklistForm from './components/ChecklistForm';
 import ChecklistOutput from './components/ChecklistOutput';
 import Navbar from './components/Navbar';
+import BiosImportModal from './components/BiosImportModal'; // Import
+import BiosListModal from './components/BiosListModal'; // Import
 import { themes } from './themes';
 import type { ChecklistData, BiosDetails } from './types';
 
@@ -13,6 +15,8 @@ function App() {
 
   // Estados para o Modal de Pesquisa Detalhada
   const [isBiosModalOpen, setIsBiosModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false); // Novo estado
+  const [isBiosListModalOpen, setIsBiosListModalOpen] = useState(false); // Novo estado da Lista
   const [biosSearchSku, setBiosSearchSku] = useState('');
   const [biosDetails, setBiosDetails] = useState<BiosDetails | null>(null);
   const [biosModalLoading, setBiosModalLoading] = useState(false);
@@ -32,9 +36,9 @@ function App() {
 
   const handleSearchBios = async (sku: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/checklist/bios/${sku}`);
+      const response = await fetch(`http://localhost:8000/api/checklist/bios/${sku}`);
       if (response.ok) {
-        const text = await response.text();
+        const text = await response.json();
         setSearchedBios(text);
       } else {
         alert('Erro ao buscar BIOS. Verifique o SKU ou o backend.');
@@ -50,7 +54,7 @@ function App() {
     setBiosModalLoading(true);
     setBiosDetails(null);
     try {
-      const response = await fetch(`http://localhost:8080/api/checklist/bios/details/${biosSearchSku}`);
+      const response = await fetch(`http://localhost:8000/api/checklist/bios/details/${biosSearchSku}`);
       if (response.ok) {
         const data = await response.json();
         setBiosDetails(data);
@@ -66,7 +70,7 @@ function App() {
 
   const handleSubmit = async (data: ChecklistData) => {
     try {
-      const response = await fetch('http://localhost:8080/api/checklist/generate', {
+      const response = await fetch('http://localhost:8000/api/checklist/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -96,6 +100,8 @@ function App() {
         themeClasses={theme.classes}
         onSearch={handleSearchBios}
         onOpenBiosModal={() => setIsBiosModalOpen(true)}
+        onOpenImportModal={() => setIsImportModalOpen(true)}
+        onOpenBiosListModal={() => setIsBiosListModalOpen(true)}
       />
 
       <div className="py-8 px-4 sm:px-6 lg:px-8">
@@ -136,6 +142,9 @@ function App() {
             className="fixed inset-0 bg-black/70 transition-opacity"
             onClick={() => setIsBiosModalOpen(false)}
           ></div>
+
+          {/* ... */}
+
 
           {/* Painel do Modal */}
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl z-10 flex flex-col max-h-[90vh]">
@@ -230,6 +239,17 @@ function App() {
           </div>
         </div>
       )}
+      {/* Modal de Importação de BIOS */}
+      <BiosImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+      />
+
+      {/* Modal de Lista de BIOS */}
+      <BiosListModal
+        isOpen={isBiosListModalOpen}
+        onClose={() => setIsBiosListModalOpen(false)}
+      />
     </div>
   );
 }

@@ -16,7 +16,7 @@ interface Props {
     currentValue: string;
 }
 
-const MonitorLcdModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const MonitorLcdModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useState<MonitorData>({
         sinaisQueda: false,
         riscosListras: false,

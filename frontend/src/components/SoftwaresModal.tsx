@@ -16,7 +16,7 @@ interface Props {
     currentValue: string;
 }
 
-const SoftwaresModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const SoftwaresModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useState<SoftwaresData>({
         swd: false,
         memtest: false,

@@ -14,7 +14,7 @@ interface Props {
     currentValue: string;
 }
 
-const MouseModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const MouseModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useState<MouseData>({
         cliquesMacios: false,
         botoesFuncionais: false,

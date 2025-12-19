@@ -14,7 +14,7 @@ interface Props {
     currentValue: string;
 }
 
-const TecladoModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const TecladoModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useState<TecladoData>({
         teclasMacias: false,
         teclasFuncionais: false,

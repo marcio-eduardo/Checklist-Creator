@@ -14,7 +14,7 @@ interface Props {
     currentValue: string; // Para tentar popular se já houver dados (opcional, mas bom pra UX)
 }
 
-const InspecaoVisualModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const InspecaoVisualModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     // Tenta inferir estado inicial da string, ou usa defaults
     const [data, setData] = useState<InspecaoData>({
         oxidado: false,

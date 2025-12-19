@@ -7,10 +7,12 @@ interface Props {
     onThemeChange: (themeKey: string) => void;
     themeClasses: ThemeClasses;
     onSearch: (sku: string) => void;
-    onOpenBiosModal: () => void; // Nova prop para abrir modal
+    onOpenBiosModal: () => void;
+    onOpenImportModal: () => void;
+    onOpenBiosListModal: () => void;
 }
 
-const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, onSearch, onOpenBiosModal }) => {
+const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, onSearch, onOpenBiosModal, onOpenImportModal, onOpenBiosListModal }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [sku, setSku] = useState('');
@@ -90,13 +92,38 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     e.stopPropagation();
-                                                    console.log("Abrindo modal de BIOS...");
                                                     onOpenBiosModal();
                                                     setIsSettingsOpen(false);
                                                 }}
                                                 className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:font-bold ${themeClasses.input}`}
                                             >
                                                 🔍 Pesquisa Detalhada BIOS
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    onOpenBiosListModal();
+                                                    setIsSettingsOpen(false);
+                                                }}
+                                                className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:font-bold ${themeClasses.input}`}
+                                            >
+                                                📋 Listar Toda BIOS
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    onOpenImportModal(); // Nova função
+                                                    setIsSettingsOpen(false);
+                                                }}
+                                                className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:font-bold ${themeClasses.input}`}
+                                            >
+                                                📥 Importar Lista de BIOS
                                             </button>
 
                                             <div className="border-t border-gray-200 my-1"></div>

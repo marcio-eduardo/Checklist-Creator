@@ -15,7 +15,7 @@ interface Props {
     currentValue: string;
 }
 
-const ManutencaoModal: React.FC<Props> = ({ isOpen, onClose, onSave, currentValue }) => {
+const ManutencaoModal: React.FC<Props> = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useState<ManutencaoData>({
         pastaTermica: false,
         limpezaRam: false,

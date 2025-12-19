@@ -75,5 +75,63 @@ Eu preciso da informação da coluna 5!
 
 
 
-Próximo passo: 
+# Walkthrough - Python Backend (FastAPI)
+
+We have successfully migrated the backend from Java Spring Boot to Python FastAPI.
+
+## Changes Completed
+
+- **New Backend Location**: `checklist/backend_python`
+- **Framework**: FastAPI + Uvicorn
+- **Database**: SQLite (`checklist.db`)
+- **PDF Parsing**: `pdfplumber` (replicates Java logic strategies)
+- **Frontend Integration**: Updated all API calls to port `8000`.
+
+## How to Run the New Backend
+
+1. Navigate to the `backend_python` directory:
+
+   ```
+   cd backend_python
+   ```
+
+2. (Optional) Create a virtual environment:
+
+   ```
+   python -m venv venv
+   
+   .\venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Run the server:
+
+   ```
+   uvicorn main:app --reload
+   ```
+
+   The server will start at `http://localhost:8000`.
+
+## Verification
+
+- **Swagger UI**: Access `http://localhost:8000/docs` to see and test all API endpoints.
+
+- Frontend
+
+  : Launch the frontend (
+
+  ```
+  npm run dev
+  ```
+
+  ) and test:
+
+  - Searching for BIOS (should return "SKU não encontrado..." if DB empty).
+  - Importing BIOS PDF (Use the same PDF as before).
+  - Generating Checklist output.
 
