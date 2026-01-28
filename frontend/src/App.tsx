@@ -36,7 +36,7 @@ function App() {
 
   const handleSearchBios = async (sku: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/checklist/bios/${sku}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/${sku}`);
       if (response.ok) {
         const text = await response.json();
         setSearchedBios(text);
@@ -54,7 +54,7 @@ function App() {
     setBiosModalLoading(true);
     setBiosDetails(null);
     try {
-      const response = await fetch(`http://localhost:8000/api/checklist/bios/details/${biosSearchSku}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/details/${biosSearchSku}`);
       if (response.ok) {
         const data = await response.json();
         setBiosDetails(data);
@@ -70,14 +70,14 @@ function App() {
 
   const handleSubmit = async (data: ChecklistData) => {
     try {
-      const response = await fetch('http://localhost:8000/api/checklist/generate', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        const text = await response.text();
+        const text = await response.json();
         setOutput(text);
         const newHistory = [text, ...history].slice(0, 10);
         setHistory(newHistory);

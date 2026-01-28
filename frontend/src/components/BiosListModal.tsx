@@ -21,7 +21,7 @@ const BiosListModal: React.FC<BiosListModalProps> = ({ isOpen, onClose }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:8000/api/checklist/bios/all');
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/all`);
             if (response.ok) {
                 const data = await response.json();
                 // Mapear para garantir que os campos correspondam (o backend retorna BiosItem, o frontend usa BiosDetails)

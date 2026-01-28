@@ -79,17 +79,44 @@ def shutdown_server():
 
 if __name__ == "__main__":
     import uvicorn
-    import webbrowser
+    import os
+    import sys
     
-    # Fix for PyInstaller --noconsole mode (where stdout/stderr are None)
-    if sys.stdout is None:
-        sys.stdout = open(os.devnull, "w")
-    if sys.stderr is None:
-        sys.stderr = open(os.devnull, "w")
+    # Check if running in Cloud (Render sets PORT)
+    port_env = os.environ.get("PORT")
+    
+    if port_env:
+        # CLOUD MODE
+        print(f"Starting in CLOUD mode on port {port_env}")
+        uvicorn.run(app, host="0.0.0.0", port=int(port_env))
+    else:
+        # DESKTOP MODE
+        # Fix for PyInstaller --noconsole mode (where stdout/stderr are None)
+        if sys.stdout is None:
+            sys.stdout = open(os.devnull, "w")
+        if sys.stderr is None:
+            sys.stderr = open(os.devnull, "w")
 
-    # Auto-open browser
-    webbrowser.open("http://127.0.0.1:8000")
-    
-    # Use 127.0.0.1 loopback for local desktop app security (instead of 0.0.0.0)
-    # use_colors=False prevents another potential isatty check issue
-    uvicorn.run(app, host="127.0.0.1", port=8000, use_colors=False)
+        try:
+            import webview
+            import threading
+            
+            def start_server():
+                # use_colors=False prevents isatty check issues
+                uvicorn.run(app, host="127.0.0.1", port=8000, use_colors=False)
+
+            # Start FastAPI in a separate thread
+            t = threading.Thread(target=start_server)
+            t.daemon = True
+            t.start()
+
+            # Create native window
+            webview.create_window("Checklist Suporte", "http://127.0.0.1:8000", width=1200, height=800)
+            webview.start()
+            
+        except ImportError:
+            # Fallback (e.g. dev env without pywebview)
+            print("pywebview not found, falling back to browser.")
+            import webbrowser
+            webbrowser.open("http://127.0.0.1:8000")
+            uvicorn.run(app, host="127.0.0.1", port=8000)

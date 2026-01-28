@@ -29,9 +29,9 @@ const BiosImportModal: React.FC<BiosImportModalProps> = ({ isOpen, onClose }) =>
         formData.append('file', selectedFile);
 
         // Determine endpoint based on file extension
-        let url = 'http://localhost:8000/api/checklist/bios/upload';
+        let url = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/upload`;
         if (selectedFile.name.toLowerCase().endsWith('.xlsx')) {
-            url = 'http://localhost:8000/api/checklist/bios/upload_excel';
+            url = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/upload_excel`;
         }
 
         try {

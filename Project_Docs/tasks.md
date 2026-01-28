@@ -4,13 +4,13 @@
     - [x] Criar pasta Project_Docs
     - [x] Criar tasks.md
     - [x] Criar logs.md
-- [ ] Configuração do Backend (Java/Spring Boot)
-    - [x] Inicializar projeto Spring Boot
+- [ ] Configuração do Backend (Python/FastAPI)
+    - [x] Inicializar projeto FastAPI
     - [x] Criar Entidade/Modelo para Dados do Checklist
     - [x] Criar Controller/Service
 - [ ] Configuração do Frontend (React/TS/Tailwind)
     - [x] Inicializar projeto React
-    - [x] Configurar Tailwind CSS
+    - [ ] Configurar Tailwind CSS v4
     - [x] Criar Componente de Formulário
     - [x] Criar Componente de Exibição de Saída
 - [ ] Integração
@@ -18,3 +18,8 @@
 - [ ] Validação
     - [ ] Testar todos os campos
     - [ ] Verificar formato de Saída
+- [ ] Preparação para Deploy (Vercel)
+    - [x] Criar `vercel.json` na raiz (Configuração de Rotas/SPA)
+    - [x] Configurar variáveis de ambiente no Frontend (VITE_API_URL)
+    - [x] Verificar script de build (`npm run build`)
+    - [ ] Validar compatibilidade do Backend (Avaliar Vercel Functions vs Render)

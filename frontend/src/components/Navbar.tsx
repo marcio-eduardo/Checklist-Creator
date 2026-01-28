@@ -155,7 +155,7 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                                                     e.stopPropagation();
                                                     if (confirm('Tem certeza que deseja fechar o aplicativo?')) {
                                                         try {
-                                                            await fetch('http://localhost:8000/api/checklist/shutdown', { method: 'POST' });
+                                                            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/shutdown`, { method: 'POST' });
                                                             window.close(); // Tenta fechar a aba
                                                             document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column'><h1>Aplicação Encerrada</h1><p>Você pode fechar esta janela.</p></div>";
                                                         } catch (err) {

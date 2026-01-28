@@ -22,3 +22,8 @@
 - Adicionado seletor de temas.
 - Adicionada lógica de seleção de tipo de equipamento (Desktop/Notebook/MiniDesk).
 - Implementada visibilidade condicional para campos "Adaptador AC/DC" e "Chave Windows".
+
+## [2026-01-27] Preparação Deploy Vercel
+- Adicionado `vercel.json` para suporte a SPA (rewrites).
+- Validado build de produção (`npm run build`).
+- Atualizado tasks.md com checklist de deploy.
