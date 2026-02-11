@@ -193,54 +193,68 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
             </div>
 
             {/* Mobile Menu */}
-            {isMenuOpen && (
-                <div className={`md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3 ${themeClasses.container} border-t`}>
-                    <button
-                        onClick={() => {
-                            onOpenBiosModal();
-                            setIsMenuOpen(false);
-                        }}
-                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
-                    >
-                        🔍 Pesquisa Detalhada BIOS
-                    </button>
-                    <button
-                        onClick={() => {
-                            onOpenBiosListModal();
-                            setIsMenuOpen(false);
-                        }}
-                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
-                    >
-                        📋 Listar Toda BIOS
-                    </button>
-                    <button
-                        onClick={() => {
-                            onOpenImportModal();
-                            setIsMenuOpen(false);
-                        }}
-                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
-                    >
-                        📥 Importar Lista de BIOS
-                    </button>
+            {/* Mobile Menu with Slide-Down Animation */}
+            <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-[80vh] opacity-100 border-t' : 'max-h-0 opacity-0'} ${themeClasses.container}`}>
+                <div className="px-4 py-4 space-y-3">
 
-                    <div className="border-t border-gray-200 my-2"></div>
-                    <div className={`px-3 py-2 text-xs font-semibold uppercase ${themeClasses.label}`}>Temas</div>
-
-                    {Object.entries(themes).map(([key, t]) => (
+                    <div className="space-y-1">
+                        <p className={`px-3 text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${themeClasses.label}`}>Bios & Dados</p>
                         <button
-                            key={key}
                             onClick={() => {
-                                onThemeChange(key);
+                                onOpenBiosModal();
                                 setIsMenuOpen(false);
                             }}
-                            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentTheme === key ? 'bg-indigo-100/10 font-bold' : ''
-                                } ${themeClasses.input}`}
+                            className={`flex items-center w-full px-3 py-3 rounded-xl transition-all ${themeClasses.input} hover:brightness-95 active:scale-95`}
                         >
-                            <span className="mr-2">{t.icon}</span> {t.name}
+                            <span className="text-xl mr-3">🔍</span>
+                            <span className="font-medium">Pesquisa Detalhada</span>
                         </button>
-                    ))}
+                        <button
+                            onClick={() => {
+                                onOpenBiosListModal();
+                                setIsMenuOpen(false);
+                            }}
+                            className={`flex items-center w-full px-3 py-3 rounded-xl transition-all ${themeClasses.input} hover:brightness-95 active:scale-95`}
+                        >
+                            <span className="text-xl mr-3">📋</span>
+                            <span className="font-medium">Listar Toda BIOS</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                onOpenImportModal();
+                                setIsMenuOpen(false);
+                            }}
+                            className={`flex items-center w-full px-3 py-3 rounded-xl transition-all ${themeClasses.input} hover:brightness-95 active:scale-95`}
+                        >
+                            <span className="text-xl mr-3">📥</span>
+                            <span className="font-medium">Importar Lista</span>
+                        </button>
+                    </div>
 
-                    <div className="border-t border-gray-200 my-2"></div>
+                    <div className="border-t border-gray-200/20 my-2"></div>
+
+                    <div className="space-y-1">
+                        <p className={`px-3 text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${themeClasses.label}`}>Aparência</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            {Object.entries(themes).map(([key, t]) => (
+                                <button
+                                    key={key}
+                                    onClick={() => {
+                                        onThemeChange(key);
+                                        setIsMenuOpen(false);
+                                    }}
+                                    className={`flex items-center justify-center px-3 py-2 rounded-lg text-sm transition-all ${currentTheme === key
+                                            ? 'bg-indigo-500 text-white shadow-md font-bold'
+                                            : `${themeClasses.input} hover:brightness-95`
+                                        }`}
+                                >
+                                    <span className="mr-2">{t.icon}</span> {t.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-200/20 my-2"></div>
 
                     <button
                         onClick={async () => {
@@ -256,12 +270,13 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                             }
                             setIsMenuOpen(false);
                         }}
-                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50`}
+                        className={`flex items-center w-full px-3 py-3 rounded-xl text-red-600 bg-red-50 hover:bg-red-100 transition-colors font-medium`}
                     >
-                        ❌ Sair do Sistema
+                        <span className="text-xl mr-3">❌</span>
+                        Sair do Sistema
                     </button>
                 </div>
-            )}
+            </div>
         </nav>
     );
 };
