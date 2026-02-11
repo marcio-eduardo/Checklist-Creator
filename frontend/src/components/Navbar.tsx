@@ -15,6 +15,7 @@ interface Props {
 const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, onSearch, onOpenBiosModal, onOpenImportModal, onOpenBiosListModal }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isThemesOpen, setIsThemesOpen] = useState(false); // New state for themes
     const [sku, setSku] = useState('');
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -234,8 +235,16 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                     <div className="border-t border-gray-200/20 my-2"></div>
 
                     <div className="space-y-1">
-                        <p className={`px-3 text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${themeClasses.label}`}>Aparência</p>
-                        <div className="grid grid-cols-2 gap-2">
+                        <button
+                            onClick={() => setIsThemesOpen(!isThemesOpen)}
+                            className={`flex items-center justify-between w-full px-3 text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${themeClasses.label} focus:outline-none`}
+                        >
+                            <span>Aparência</span>
+                            <span>{isThemesOpen ? '▲' : '▼'}</span>
+                        </button>
+
+                        {/* Collapsible Themes Grid */}
+                        <div className={`grid grid-cols-2 gap-2 transition-all duration-300 overflow-hidden ${isThemesOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                             {Object.entries(themes).map(([key, t]) => (
                                 <button
                                     key={key}
@@ -254,11 +263,11 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                         </div>
                     </div>
 
-                    <div className="border-t border-gray-200/20 my-2"></div>
+                    {/* <div className="border-t border-gray-200/20 my-2"></div>
 
-                    <button
+                     <button
                         onClick={async () => {
-                            if (confirm('Tem certeza que deseja fechar o aplicativo?')) {
+                             if (confirm('Tem certeza que deseja fechar o aplicativo?')) {
                                 try {
                                     await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/shutdown`, { method: 'POST' });
                                     window.close();
@@ -274,7 +283,7 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                     >
                         <span className="text-xl mr-3">❌</span>
                         Sair do Sistema
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </nav>
