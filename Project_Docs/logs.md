@@ -24,6 +24,12 @@
 - Implementada visibilidade condicional para campos "Adaptador AC/DC" e "Chave Windows".
 
 ## [2026-01-27] Preparação Deploy Vercel
-- Adicionado `vercel.json` para suporte a SPA (rewrites).
+- Adicionado `vercel.json` para suportar rotas SPA (rewrites).
 - Validado build de produção (`npm run build`).
 - Atualizado tasks.md com checklist de deploy.
+
+## [2026-01-27] Migração Backend para Nuvem
+- Configurado `Procfile` e `runtime.txt` para deploy no Render.
+- Migrado banco de dados para suportar **PostgreSQL (Neon Database)** via `DATABASE_URL`.
+- Adicionado driver `psycopg2-binary`.
+- Criado Guia de Deploy (`deploy_guide.md`) com instruções de Neon + Render + UptimeRobot.

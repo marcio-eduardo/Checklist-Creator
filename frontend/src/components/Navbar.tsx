@@ -192,7 +192,76 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
                 </div>
             </div>
 
-            {/* Mobile Menu (Simplificado para brevidade, manter lógica existente se possível) */}
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                <div className={`md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3 ${themeClasses.container} border-t`}>
+                    <button
+                        onClick={() => {
+                            onOpenBiosModal();
+                            setIsMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
+                    >
+                        🔍 Pesquisa Detalhada BIOS
+                    </button>
+                    <button
+                        onClick={() => {
+                            onOpenBiosListModal();
+                            setIsMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
+                    >
+                        📋 Listar Toda BIOS
+                    </button>
+                    <button
+                        onClick={() => {
+                            onOpenImportModal();
+                            setIsMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${themeClasses.input} hover:font-bold`}
+                    >
+                        📥 Importar Lista de BIOS
+                    </button>
+
+                    <div className="border-t border-gray-200 my-2"></div>
+                    <div className={`px-3 py-2 text-xs font-semibold uppercase ${themeClasses.label}`}>Temas</div>
+
+                    {Object.entries(themes).map(([key, t]) => (
+                        <button
+                            key={key}
+                            onClick={() => {
+                                onThemeChange(key);
+                                setIsMenuOpen(false);
+                            }}
+                            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentTheme === key ? 'bg-indigo-100/10 font-bold' : ''
+                                } ${themeClasses.input}`}
+                        >
+                            <span className="mr-2">{t.icon}</span> {t.name}
+                        </button>
+                    ))}
+
+                    <div className="border-t border-gray-200 my-2"></div>
+
+                    <button
+                        onClick={async () => {
+                            if (confirm('Tem certeza que deseja fechar o aplicativo?')) {
+                                try {
+                                    await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/shutdown`, { method: 'POST' });
+                                    window.close();
+                                    document.body.innerHTML = "<div style='display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column'><h1>Aplicação Encerrada</h1><p>Você pode fechar esta janela.</p></div>";
+                                } catch (err) {
+                                    console.error(err);
+                                    alert('Erro ao tentar desligar o servidor.');
+                                }
+                            }
+                            setIsMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50`}
+                    >
+                        ❌ Sair do Sistema
+                    </button>
+                </div>
+            )}
         </nav>
     );
 };

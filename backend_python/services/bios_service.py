@@ -163,26 +163,26 @@ async def upload_bios_pdf(file: UploadFile = File(...), db: Session = Depends(ge
         df = pd.DataFrame(all_rows, columns=cols)
         
         # Save to Excel for Debugging with Auto-Adjusted Columns
-        debug_filename = "bios_debug.xlsx"
-        try:
-            with pd.ExcelWriter(debug_filename, engine='openpyxl') as writer:
-                df.to_excel(writer, index=False, sheet_name='Sheet1')
-                worksheet = writer.sheets['Sheet1']
-                for i, col in enumerate(df.columns):
-                    # Calculate max length of data in column (or header length)
-                    series = df[col].astype(str)
-                    max_len = max(
-                        series.map(len).max() if not series.empty else 0,
-                        len(str(col))
-                    ) + 2 # Add padding
-                    
-                    col_letter = get_column_letter(i + 1)
-                    worksheet.column_dimensions[col_letter].width = max_len
-            print(f"DEBUG: Saved extraction to {debug_filename}")
-        except Exception as exc:
-            print(f"DEBUG: Failed to save debug excel: {exc}")
-            # Fallback if openpyxl fails
-            df.to_excel("bios_debug_fallback.xlsx", index=False)
+        # debug_filename = "bios_debug.xlsx"
+        # try:
+        #     with pd.ExcelWriter(debug_filename, engine='openpyxl') as writer:
+        #         df.to_excel(writer, index=False, sheet_name='Sheet1')
+        #         worksheet = writer.sheets['Sheet1']
+        #         for i, col in enumerate(df.columns):
+        #             # Calculate max length of data in column (or header length)
+        #             series = df[col].astype(str)
+        #             max_len = max(
+        #                 series.map(len).max() if not series.empty else 0,
+        #                 len(str(col))
+        #             ) + 2 # Add padding
+        #             
+        #             col_letter = get_column_letter(i + 1)
+        #             worksheet.column_dimensions[col_letter].width = max_len
+        #     print(f"DEBUG: Saved extraction to {debug_filename}")
+        # except Exception as exc:
+        #     print(f"DEBUG: Failed to save debug excel: {exc}")
+        #     # Fallback if openpyxl fails
+        #     # df.to_excel("bios_debug_fallback.xlsx", index=False)
 
         items_to_save = []
         
