@@ -223,10 +223,11 @@ async def upload_bios_pdf(file: UploadFile = File(...), db: Session = Depends(ge
             unique_items = {item.sku: item for item in items_to_save}
             final_list = list(unique_items.values())
             
-            db.query(BiosItem).delete()
-            db.add_all(final_list)
+            # Optimized Bulk Delete & Insert
+            db.query(BiosItem).delete(synchronize_session=False)
+            db.bulk_save_objects(final_list)
             db.commit()
-            return f"Sucesso! {len(final_list)} itens de BIOS importados. (Verifique 'bios_debug.xlsx' na pasta do projeto)"
+            return f"Sucesso! {len(final_list)} itens de BIOS importados."
         else:
             return "Erro: Nenhuma linha válida identificada."
 
@@ -288,8 +289,9 @@ async def upload_bios_excel(file: UploadFile = File(...), db: Session = Depends(
             unique_items = {item.sku: item for item in items_to_save}
             final_list = list(unique_items.values())
             
-            db.query(BiosItem).delete()
-            db.add_all(final_list)
+            # Optimized Bulk Delete & Insert
+            db.query(BiosItem).delete(synchronize_session=False)
+            db.bulk_save_objects(final_list)
             db.commit()
             return f"Sucesso! {len(final_list)} itens importados via Excel."
         else:
