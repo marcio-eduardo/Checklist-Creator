@@ -31,6 +31,7 @@ def get_all_bios(db: Session = Depends(get_db)):
 
 @router.get("/details/{sku}", response_model=BiosDetails)
 def get_bios_details(sku: str, db: Session = Depends(get_db)):
+    sku = sku.strip()
     item = db.query(BiosItem).filter(BiosItem.sku == sku).first()
     if not item:
         return BiosDetails(
@@ -45,6 +46,7 @@ def get_bios_details(sku: str, db: Session = Depends(get_db)):
 
 @router.get("/{sku}")
 def get_bios_version(sku: str, db: Session = Depends(get_db)):
+    sku = sku.strip()
     item = db.query(BiosItem).filter(BiosItem.sku == sku).first()
     if not item:
         return "SKU não encontrado na base de dados (Verifique se a lista foi importada)."

@@ -23,8 +23,9 @@ const Navbar: React.FC<Props> = ({ currentTheme, onThemeChange, themeClasses, on
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (sku) {
-            onSearch(sku);
+        const trimmedSku = sku.trim();
+        if (trimmedSku) {
+            onSearch(trimmedSku);
         }
     };
 

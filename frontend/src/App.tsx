@@ -50,11 +50,12 @@ function App() {
   };
 
   const handleDetailedBiosSearch = async () => {
-    if (!biosSearchSku) return;
+    const trimmedSku = biosSearchSku.trim();
+    if (!trimmedSku) return;
     setBiosModalLoading(true);
     setBiosDetails(null);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/details/${biosSearchSku}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/details/${encodeURIComponent(trimmedSku)}`);
       if (response.ok) {
         const data = await response.json();
         setBiosDetails(data);
