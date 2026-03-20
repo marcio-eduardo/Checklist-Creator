@@ -3,8 +3,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 import os
+import sys
 
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./checklist.db")
+# Computar o diretório base dinamicamente para PyInstaller e Script convencional
+if getattr(sys, 'frozen', False):
+    base_dir = os.path.dirname(sys.executable)
+else:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+default_db_path = os.path.join(base_dir, "checklist.db")
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{default_db_path}")
 
 # Fix for Render using postgres:// instead of postgresql://
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
