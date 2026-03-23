@@ -287,6 +287,8 @@ async def upload_bios_excel(file: UploadFile = File(...), db: Session = Depends(
                 versao_bios=versao_bios,
                 raw_data=raw_data_line
             )
+            items_to_save.append(item)
+
         if items_to_save:
             # Deduplicate by SKU + Código + Versão to avoid perfect duplicates
             unique_items = {(item.sku, item.codigo_bios, item.versao_bios): item for item in items_to_save}
