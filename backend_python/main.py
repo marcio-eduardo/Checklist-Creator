@@ -14,7 +14,8 @@ app = FastAPI(title="Checklist Backend")
 origins = [
     "http://localhost:5173",
     "http://localhost:8080",
-    "*"
+    "http://127.0.0.1:8000",
+    "https://checklist-creator.vercel.app"
 ]
 
 app.add_middleware(
