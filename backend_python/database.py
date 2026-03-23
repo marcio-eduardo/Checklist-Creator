@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Text
+from sqlalchemy import create_engine, Column, String, Text, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -37,7 +37,8 @@ Base = declarative_base()
 class BiosItem(Base):
     __tablename__ = "bios_items"
 
-    sku = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    sku = Column(String, index=True)
     descricao = Column(String)
     pep = Column(String)
     codigo_bios = Column(String)

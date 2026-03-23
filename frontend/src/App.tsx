@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import ChecklistForm from './components/ChecklistForm';
 import ChecklistOutput from './components/ChecklistOutput';
 import Navbar from './components/Navbar';
-import BiosImportModal from './components/BiosImportModal'; // Import
-import BiosListModal from './components/BiosListModal'; // Import
+import BiosImportModal from './components/BiosImportModal';
+import BiosListModal from './components/BiosListModal';
+import BiosSelectionModal from './components/BiosSelectionModal';
 import { themes } from './themes';
 import type { ChecklistData, BiosDetails } from './types';
 
@@ -20,6 +21,9 @@ function App() {
   const [biosSearchSku, setBiosSearchSku] = useState('');
   const [biosDetails, setBiosDetails] = useState<BiosDetails | null>(null);
   const [biosModalLoading, setBiosModalLoading] = useState(false);
+  const [selectionBiosList, setSelectionBiosList] = useState<BiosDetails[]>([]);
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
+  const [selectionMode, setSelectionMode] = useState<'form' | 'details' | null>(null);
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('checklist_history');
@@ -38,8 +42,23 @@ function App() {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/${sku}`);
       if (response.ok) {
-        const text = await response.json();
-        setSearchedBios(text);
+        const data = await response.json();
+        
+        if (Array.isArray(data)) {
+            if (data.length === 0) {
+                alert('Nenhuma BIOS encontrada para este SKU.');
+            } else if (data.length === 1) {
+                setSearchedBios(data[0].versaoBios);
+            } else {
+                setSelectionBiosList(data);
+                setSelectionMode('form');
+                setIsSelectionModalOpen(true);
+            }
+        } else if (data && data.error) {
+            alert(data.error);
+        } else {
+            setSearchedBios(typeof data === 'string' ? data : data.versaoBios || '');
+        }
       } else {
         alert('Erro ao buscar BIOS. Verifique o SKU ou o backend.');
       }
@@ -58,7 +77,19 @@ function App() {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/checklist/bios/details/${encodeURIComponent(trimmedSku)}`);
       if (response.ok) {
         const data = await response.json();
-        setBiosDetails(data);
+        if (Array.isArray(data)) {
+            if (data.length === 1) {
+                setBiosDetails(data[0]);
+            } else if (data.length > 1) {
+                setSelectionBiosList(data);
+                setSelectionMode('details');
+                setIsSelectionModalOpen(true);
+            } else {
+                setBiosDetails(null);
+            }
+        } else {
+            setBiosDetails(data);
+        }
       } else {
         setBiosDetails(null);
       }
@@ -252,6 +283,21 @@ function App() {
       <BiosListModal
         isOpen={isBiosListModalOpen}
         onClose={() => setIsBiosListModalOpen(false)}
+      />
+
+      {/* NOVO: Modal de Seleção de BIOS em caso de Multiplos Registros */}
+      <BiosSelectionModal 
+        isOpen={isSelectionModalOpen} 
+        onClose={() => setIsSelectionModalOpen(false)} 
+        biosList={selectionBiosList} 
+        onSelect={(bios) => {
+            if (selectionMode === 'form') {
+                setSearchedBios(bios.versaoBios);
+            } else if (selectionMode === 'details') {
+                setBiosDetails(bios);
+            }
+            setIsSelectionModalOpen(false);
+        }} 
       />
     </div>
   );

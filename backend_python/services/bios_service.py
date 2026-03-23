@@ -29,28 +29,30 @@ class BiosDetails(BiosResponse):
 def get_all_bios(db: Session = Depends(get_db)):
     return db.query(BiosItem).all()
 
-@router.get("/details/{sku}", response_model=BiosDetails)
+@router.get("/details/{sku}", response_model=List[BiosDetails])
 def get_bios_details(sku: str, db: Session = Depends(get_db)):
     sku = sku.strip()
-    item = db.query(BiosItem).filter(BiosItem.sku == sku).first()
-    if not item:
-        return BiosDetails(
+    items = db.query(BiosItem).filter(BiosItem.sku == sku).all()
+    if not items:
+        # Retornamos uma array contendo 1 item fake com a mensagem apropriada
+        return [BiosDetails(
             sku=sku,
-            descricao="SKU não encontrado na base interna. Por favor, importe a lista de BIOS em Configurações.",
+            descricao="SKU não encontrado na base interna. Por favor, importe a lista de BIOS.",
             pep="",
             codigo_bios="",
             versao_bios="",
             raw_data=""
-        )
-    return item
+        )]
+    return items
 
 @router.get("/{sku}")
 def get_bios_version(sku: str, db: Session = Depends(get_db)):
     sku = sku.strip()
-    item = db.query(BiosItem).filter(BiosItem.sku == sku).first()
-    if not item:
-        return "SKU não encontrado na base de dados (Verifique se a lista foi importada)."
-    return item.versao_bios
+    items = db.query(BiosItem).filter(BiosItem.sku == sku).all()
+    if not items:
+        return {"error": "SKU não encontrado na base de dados (Verifique se a lista foi importada)."}
+    # Agora retorna os items inteiros no lugar de somente uma string 'versao', para o frontend escolher
+    return items
 
 def extract_bios_data_from_row(row_list: List[str]):
     """
@@ -221,8 +223,8 @@ async def upload_bios_pdf(file: UploadFile = File(...), db: Session = Depends(ge
             items_to_save.append(item)
 
         if items_to_save:
-            # Deduplicate by SKU
-            unique_items = {item.sku: item for item in items_to_save}
+            # Deduplicate by SKU + Código + Versão to avoid perfect duplicates
+            unique_items = {(item.sku, item.codigo_bios, item.versao_bios): item for item in items_to_save}
             final_list = list(unique_items.values())
             
             # Optimized Bulk Delete & Insert
@@ -285,11 +287,9 @@ async def upload_bios_excel(file: UploadFile = File(...), db: Session = Depends(
                 versao_bios=versao_bios,
                 raw_data=raw_data_line
             )
-            items_to_save.append(item)
-
         if items_to_save:
-            # Deduplicate by SKU
-            unique_items = {item.sku: item for item in items_to_save}
+            # Deduplicate by SKU + Código + Versão to avoid perfect duplicates
+            unique_items = {(item.sku, item.codigo_bios, item.versao_bios): item for item in items_to_save}
             final_list = list(unique_items.values())
             
             # Optimized Bulk Delete & Insert
