@@ -234,6 +234,7 @@ async def upload_bios_pdf(file: UploadFile = File(...), db: Session = Depends(ge
             return "Erro: Nenhuma linha válida identificada."
 
     except Exception as e:
+        db.rollback()
         print(e)
         raise HTTPException(status_code=500, detail=f"Erro ao processar: {str(e)}")
 
@@ -300,5 +301,6 @@ async def upload_bios_excel(file: UploadFile = File(...), db: Session = Depends(
             return "Erro: Nenhuma linha válida encontrada no Excel."
 
     except Exception as e:
+        db.rollback()
         print(e)
         raise HTTPException(status_code=500, detail=f"Erro ao processar Excel: {str(e)}")
