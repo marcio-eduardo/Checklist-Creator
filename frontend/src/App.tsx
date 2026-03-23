@@ -166,7 +166,9 @@ function App() {
             {/* Body */}
             <div className="p-6 overflow-y-auto">
               <div className="flex gap-2 mb-6">
+                <label htmlFor="bios-sku-search" className="sr-only">Pesquisar SKU da BIOS</label>
                 <input
+                  id="bios-sku-search"
                   type="text"
                   value={biosSearchSku}
                   onChange={(e) => setBiosSearchSku(e.target.value)}

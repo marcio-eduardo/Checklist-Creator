@@ -36,14 +36,14 @@ export const themes: Record<string, Theme> = {
         icon: '👾',
         classes: {
             page: 'bg-[#0b0c15]',
-            container: 'bg-[#1a1b26] shadow-lg border border-purple-500/30',
-            title: 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-extrabold',
-            label: 'text-purple-300',
-            input: 'border-purple-900/50 focus:border-pink-500 focus:ring-pink-500/20 bg-[#0f1019] text-pink-100',
-            button: 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white border-none',
-            output: 'bg-[#0f1019] border-purple-900/50 text-purple-100',
-            outputPre: 'bg-black text-pink-400 border-purple-900',
-            copyButton: 'text-purple-300 bg-purple-900/20 hover:bg-purple-900/40 border border-purple-500/30'
+            container: 'bg-[#1a1b26] shadow-lg border border-emerald-500/30',
+            title: 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-600 font-extrabold',
+            label: 'text-emerald-300',
+            input: 'border-emerald-900/50 focus:border-cyan-500 focus:ring-cyan-500/20 bg-[#0f1019] text-cyan-100',
+            button: 'bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white border-none',
+            output: 'bg-[#0f1019] border-emerald-900/50 text-emerald-100',
+            outputPre: 'bg-black text-cyan-400 border-emerald-900',
+            copyButton: 'text-emerald-300 bg-emerald-900/20 hover:bg-emerald-900/40 border border-emerald-500/30'
         }
     }
 };

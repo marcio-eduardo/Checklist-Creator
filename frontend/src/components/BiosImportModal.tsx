@@ -100,7 +100,9 @@ const BiosImportModal: React.FC<BiosImportModalProps> = ({ isOpen, onClose }) =>
                     </p>
 
                     <div className="flex flex-col gap-4">
+                        <label htmlFor="bios-file-upload" className="sr-only">Upload de arquivo BIOS</label>
                         <input
+                            id="bios-file-upload"
                             type="file"
                             accept=".pdf, .xlsx"
                             onChange={handleFileChange}
