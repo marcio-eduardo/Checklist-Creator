@@ -1,0 +1,36 @@
+# Environments & Agents
+.agent/
+.agent**
+.gemini/
+.venv/
+venv/
+env/
+__pycache__/
+
+# Node
+node_modules/
+.npm
+package-lock.json
+
+# Builds & Outputs
+dist/
+build/
+out/
+*.exe
+*.AppImage
+*.dmg
+*.apk
+
+# Databases & Secrets
+*.db
+*.sqlite3
+.env
+.env.local
+.env.*.local
+*.log
+
+# Editor & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
